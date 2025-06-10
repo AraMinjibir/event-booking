@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import mlk.eventbookingsystem.entities.User;
 import mlk.eventbookingsystem.repos.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,14 +14,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepo;
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
-    public User createUser(User request){
-
-        User user = new User();
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
-        user.setRoleFromString(request.getRole().name());
+    public User createUser(User user){
         return userRepo.save(user);
     }
 
