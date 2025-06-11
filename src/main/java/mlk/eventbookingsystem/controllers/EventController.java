@@ -3,6 +3,7 @@ package mlk.eventbookingsystem.controllers;
 import lombok.RequiredArgsConstructor;
 import mlk.eventbookingsystem.entities.Event;
 import mlk.eventbookingsystem.services.EventService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,33 +18,34 @@ public class EventController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public Event createEvent(@RequestBody Event events){
-        return eventService.createEvent(events);
+    public Event createEvent(@RequestBody Event event) {
+        return eventService.createEvent(event);
     }
-
-
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public void deleteEvent(@PathVariable Long id){
-        eventService.deleteEvent(id);
-    }
-
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public Event updateEvent(@PathVariable Long id,@RequestBody Event events){
-        return eventService.updateEvent(id, events);
+    public Event updateEvent(@PathVariable Long id, @RequestBody Event event) {
+        return eventService.updateEvent(id, event);
     }
 
-
-    @GetMapping
-    public Optional<Event> getEventById(Long id){
-        return eventService.getEventById(id);
-    }
-
-    @GetMapping("/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<Event> getAllEvents(){
+    public void deleteEvent(@PathVariable Long id) {
+        eventService.deleteEvent(id);
+    }
+
+    // Get single event by ID (public access)
+    @GetMapping("/{id}")
+    public ResponseEntity<Event> getEventById(@PathVariable Long id) {
+        return eventService.getEventById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Get all events (admin only)
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Event> getAllEvents() {
         return eventService.getAllEvents();
     }
 }
