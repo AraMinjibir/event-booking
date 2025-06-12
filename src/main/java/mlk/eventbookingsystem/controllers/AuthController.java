@@ -11,7 +11,6 @@ import mlk.eventbookingsystem.security.CustomUserDetails;
 import mlk.eventbookingsystem.services.JwtService;
 import mlk.eventbookingsystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,9 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -62,7 +61,7 @@ public class AuthController {
         }
 
         userService.createUser(user);
-        return ResponseEntity.ok("User registered successfully");
+        return ResponseEntity.ok(Map.of("message", "User registered successfully"));
     }
 
     @PostMapping("/login")
@@ -79,7 +78,9 @@ public class AuthController {
 
             System.out.println("Token generated: " + token);
 
-            return ResponseEntity.ok(new AuthResponse(token));
+            return ResponseEntity.ok(new AuthResponse(token,
+                    userDetails.getUsername(),
+                    userDetails.getAuthorities().iterator().next().getAuthority()));
         } catch (Exception ex) {
             ex.printStackTrace();
             return ResponseEntity.status(401).body("Invalid credentials or login error");
