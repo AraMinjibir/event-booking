@@ -1,0 +1,15 @@
+<form [formGroup] = "signupForm" class="max-w-30rem mx-auto py-6 px-4 my-6 bg-primary" (ngSubmit)="onSUbmit()">
+  <div class="flex flex-column gap-2">
+    <label for="email">Username</label>
+    <input type="text" pInputText formControlName="email" placeholder="Enter your Email Address."/>
+</div>
+<div class="flex flex-column gap-2">
+  <label for="password">Password</label>
+  <input type="text" pInputText formControlName="password" placeholder="Enter your Password."/>
+</div>
+<div class="card flex justify-center">
+  <p-autocomplete formControlName="role" [suggestions]="items" 
+  (completeMethod)="search($event)" optionLabel="label" [dropdown]="true" />
+</div>
+<button pButton type="submit">Submit</button>
+</form>
