@@ -6,18 +6,19 @@ import { AutoComplete } from 'primeng/autocomplete';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { AuthService } from '../../Service/auth.service';
+import { Router, RouterLink } from '@angular/router';
 
 
 
 
 @Component({
   selector: 'signup',
-  imports: [ReactiveFormsModule, InputTextModule, FormsModule, AutoComplete, ButtonModule],
+  imports: [ReactiveFormsModule, InputTextModule, FormsModule, AutoComplete, ButtonModule,RouterLink],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'
 })
 export class SignupComponent {
-
+  private router:Router = inject(Router);
   selectedRoles: string[] = ["ADMIN", "USER"];
 items: string[] | undefined;
 value: string;
@@ -46,6 +47,7 @@ value: string;
             next: () => {
               console.log("User Created Successfully")
               this.signupForm.reset();
+              this.router.navigate(['/admin/admin-layout']);
             },
             error: (err) => {
               console.log("Error occured", err)
