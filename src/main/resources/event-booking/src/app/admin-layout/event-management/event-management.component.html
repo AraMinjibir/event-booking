@@ -1,0 +1,63 @@
+<h2>Manage Events</h2>
+
+<form [formGroup]="eventForm" (ngSubmit)="saveEvent()" class="p-fluid p-formgrid grid">
+  <div class="field col-12 md:col-6">
+    <label>Location</label>
+    <input type="text" formControlName="location" class="p-inputtext" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>Date & Time</label>
+    <input type="datetime-local" formControlName="dateTime" class="p-inputtext" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>Hall Name</label>
+    <input type="text" formControlName="halls" class="p-inputtext" />
+  </div>
+  <div class="field col-6 md:col-3">
+    <label>Total Seats</label>
+    <input type="number" formControlName="totalSeat" class="p-inputtext" />
+  </div>
+  <div class="field col-6 md:col-3">
+    <label>Available Seats</label>
+    <input type="number" formControlName="availableSeat" class="p-inputtext" />
+  </div>
+  <div class="field col-12">
+    <label>Description</label>
+    <textarea formControlName="description" class="p-inputtextarea"></textarea>
+  </div>
+  <div class="field col-12">
+    <label>Image URL</label>
+    <input type="text" formControlName="imageUrl" class="p-inputtext" />
+  </div>
+
+  <div class="col-12 mt-3">
+    <button type="submit" class="p-button p-button-primary">{{ editingEventId ? 'Update' : 'Create' }} Event</button>
+    <button type="button" class="p-button p-button-secondary ml-2" (click)="cancelEdit()" *ngIf="editingEventId">Cancel</button>
+  </div>
+</form>
+
+<hr class="my-4" />
+
+<p-table [value]="events">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>ID</th>
+      <th>Location</th>
+      <th>Date</th>
+      <th>Seats</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-event>
+    <tr>
+      <td>{{ event.id }}</td>
+      <td>{{ event.location }}</td>
+      <td>{{ event.dateTime }}</td>
+      <td>{{ event.availableSeat }} / {{ event.totalSeat }}</td>
+      <td>
+        <button class="p-button p-button-sm p-button-warning mr-2" (click)="editEvent(event)">Edit</button>
+        <button class="p-button p-button-sm p-button-danger" (click)="deleteEvent(event.id!)">Delete</button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
