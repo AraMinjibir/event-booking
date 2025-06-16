@@ -35,7 +35,7 @@ public class BookingController {
         return bookService.getBookingById(id);
     }
 
-    @GetMapping
+    @GetMapping("/getBooks")
     @PreAuthorize("hasRole('ADMIN')")
     public List<Booking> getAllBooks(){
         return bookService.getAllBookings();
