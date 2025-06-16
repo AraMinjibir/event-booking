@@ -4,10 +4,11 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { AuthService } from '../../Service/auth.service';
 import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'login',
-  imports: [ReactiveFormsModule, FormsModule, InputTextModule, ButtonModule],
+  imports: [ReactiveFormsModule, FormsModule, InputTextModule, ButtonModule, NgIf],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -22,16 +23,18 @@ export class LoginComponent {
   onLogin() {
     if (this.loginForm.invalid) return;
 
+
     this.authService.login(this.loginForm.value as { email: string; password: string }).subscribe({
       next: (res) => {
         localStorage.setItem('token', res.token);
         localStorage.setItem('role', res.role);
         console.log('Login successful');
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/admin/admin-layout']);
       },
       error: (err) => {
         alert('Invalid credentials');
-      }
+      },
+     
     });
     
   }
