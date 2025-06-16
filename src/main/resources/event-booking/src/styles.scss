@@ -1,3 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @use "primeflex/themes/primeone-light";
 @use 'primeflex/primeflex' as *;
+
+
+a{
+    text-decoration: none;
+    color: rgba(107, 107, 213, 0.677);
+    font-size: larger;
+    font-style: italic;
+}
