@@ -11,5 +11,6 @@
   <p-autocomplete formControlName="role" [suggestions]="items" 
   (completeMethod)="search($event)" optionLabel="label" [dropdown]="true" />
 </div>
+<p>Already have an account? <a routerLink="/auth/login">login</a></p>
 <button pButton type="submit">Submit</button>
 </form>
