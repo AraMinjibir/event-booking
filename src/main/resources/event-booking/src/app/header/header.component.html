@@ -3,5 +3,6 @@
     <div class="flex align-items-center gap-3">
         <a routerLink="auth/signup">Book an Event</a>
         <a routerLink="auth/signup">Manage Event</a>
+        <button pButton (click)="logout()" *ngIf="authService.isLoggedIn()">Logout</button>
     </div>
 </div>

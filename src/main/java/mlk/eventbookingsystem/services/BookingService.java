@@ -3,20 +3,60 @@ package mlk.eventbookingsystem.services;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import mlk.eventbookingsystem.entities.Booking;
+import mlk.eventbookingsystem.entities.Event;
+import mlk.eventbookingsystem.entities.User;
 import mlk.eventbookingsystem.repos.BookingRepository;
+import mlk.eventbookingsystem.repos.EventRepository;
+import mlk.eventbookingsystem.repos.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class BookingService {
     private final BookingRepository bookingRepo;
+    private final UserRepository userRepo;
+    private final EventRepository eventRepo;
 
     @Transactional
-    public Booking createBooking(Booking book){
-        return bookingRepo.save(book);
+    public List<Booking> bookEvent(Long eventId, List<String> selectedSeats, String userEmail) {
+        User user = userRepo.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + userEmail));
+        Event event = eventRepo.findById(eventId)
+                .orElseThrow(() -> new RuntimeException("Event not found with ID: " + eventId));
+
+        List<Booking> bookings = new ArrayList<>();
+
+        for (String seat : selectedSeats) {
+            Booking booking = new Booking();
+            booking.setUsers(user);
+            booking.setEvents(event);
+            booking.setBookedAt(LocalDate.now());
+
+            // Extract numeric part from seat like "A5" => 5
+            String numberOnly = seat.replaceAll("[^0-9]", "");
+            booking.setSeatNumber(Integer.parseInt(numberOnly));
+
+            // Generate a random QR code (can later link to actual PDF/image)
+            booking.setQrCode(UUID.randomUUID().toString());
+
+            bookings.add(bookingRepo.save(booking));
+        }
+
+        return bookings;
+    }
+
+    private int parseSeat(String seat) {
+        try {
+            return Integer.parseInt(seat.replaceAll("[^0-9]", ""));
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 
     @Transactional

@@ -3,6 +3,7 @@ import { SignupComponent } from './Auth/signup/signup.component';
 import { LoginComponent } from './Auth/login/login.component';
 import { PageNotFoundComponent } from './Auth/page-not-found/page-not-found.component';
 import { HomeComponent } from './home/home.component';
+import { authGuard } from './Service/auth.guard';
 
 export const routes: Routes = [
   {
@@ -24,10 +25,12 @@ export const routes: Routes = [
     
 {
   path: "admin",
-  loadChildren: () => import("./admin-layout/admin.module").then(a => a.AdminModule)
+  loadChildren: () => import("./admin-layout/admin.module").then(a => a.AdminModule),
+  canActivate:[authGuard]
 },
 {
   path: "user",
-  loadChildren: () => import("./user-layout/user.module").then(b => b.UserModule)
+  loadChildren: () => import("./user-layout/user.module").then(b => b.UserModule),
+  canActivate:[authGuard]
 },
 { path: '**', component: PageNotFoundComponent }];

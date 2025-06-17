@@ -13,9 +13,9 @@ public class Booking {
     private int seatNumber;
     private String qrCode;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User users;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Event events;
 
     public Booking() {

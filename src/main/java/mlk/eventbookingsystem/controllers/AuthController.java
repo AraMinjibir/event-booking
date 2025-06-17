@@ -78,9 +78,10 @@ public class AuthController {
 
             System.out.println("Token generated: " + token);
 
-            return ResponseEntity.ok(new AuthResponse(token,
-                    userDetails.getUsername(),
-                    userDetails.getAuthorities().iterator().next().getAuthority()));
+            return ResponseEntity.ok(new AuthResponse(
+                    token,
+                    userDetails.getAuthorities().iterator().next().getAuthority(),
+                    userDetails.getUsername()));
         } catch (Exception ex) {
             ex.printStackTrace();
             return ResponseEntity.status(401).body("Invalid credentials or login error");
