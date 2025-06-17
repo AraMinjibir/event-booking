@@ -26,4 +26,8 @@ export const routes: Routes = [
   path: "admin",
   loadChildren: () => import("./admin-layout/admin.module").then(a => a.AdminModule)
 },
+{
+  path: "user",
+  loadChildren: () => import("./user-layout/user.module").then(b => b.UserModule)
+},
 { path: '**', component: PageNotFoundComponent }];

@@ -10,7 +10,7 @@ import { Booking } from '../Model/booking';
 export class AuthService {
   private baseUrl = 'http://localhost:8080/api/auth/register';
   private baseUrl2 = 'http://localhost:8080/api/auth/login';
-  private bookUrl = 'http://localhost:8080/api/books/getBooks'
+  
 
   constructor(private http: HttpClient) { }
 
@@ -21,7 +21,5 @@ export class AuthService {
   login(data: {email:string; password:string}):Observable<Auth>{
     return this.http.post<Auth>(this.baseUrl2, data);
   }
-  getBook():Observable<Booking[]>{
-    return this.http.get<Booking[]>(this.bookUrl);
-  }
+  
 }

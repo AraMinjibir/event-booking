@@ -22,21 +22,32 @@ export class LoginComponent {
 
   onLogin() {
     if (this.loginForm.invalid) return;
-
-
-    this.authService.login(this.loginForm.value as { email: string; password: string }).subscribe({
+  
+    const credentials = this.loginForm.getRawValue(); 
+    this.authService.login(credentials).subscribe({
       next: (res) => {
         localStorage.setItem('token', res.token);
-        localStorage.setItem('role', res.role);
-        console.log('Login successful');
-        this.router.navigate(['/admin/admin-layout']);
+        const role = res.role.replace('ROLE_', '');
+        localStorage.setItem('role', role);
+  
+        if (role === 'ADMIN') {
+          this.router.navigate(['/admin/admin-layout']);
+        } else if (role === 'USER') {
+          this.router.navigate(['/user']);
+        } else {
+          console.warn('Unknown role:', res.role);
+          this.router.navigate(['/']);
+        }
       },
       error: (err) => {
         alert('Invalid credentials');
-      },
-     
+        console.error(err);
+      }
     });
-    
   }
+  
+  
+  
+  
 
 }

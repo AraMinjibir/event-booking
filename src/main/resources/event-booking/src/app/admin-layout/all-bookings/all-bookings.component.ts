@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../../Service/auth.service';
 import { Booking } from '../../Model/booking';
 import { TableModule } from 'primeng/table';
+import { BookingService } from '../../Service/booking.service';
 
 
 @Component({
@@ -11,12 +11,13 @@ import { TableModule } from 'primeng/table';
   styleUrl: './all-bookings.component.scss'
 })
 export class AllBookingsComponent {
-  bookService:AuthService = inject(AuthService);
+  bookService:BookingService = inject(BookingService);
   bookings: Booking[] =[];
 
   ngOnInit(){
     this.bookService.getBook().subscribe({
       next: (data) => {
+        console.log('Bookings:', data);
         this.bookings = data;
       },
       error: (err) => {

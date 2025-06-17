@@ -1,0 +1,14 @@
+<div class="p-4 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div *ngFor="let event of events" class="border rounded-xl p-4 shadow-md">
+      <h2 class="text-xl font-bold"><strong>Hall Name</strong>:{{ event.halls }}</h2>
+     <strong>Location</strong>: <p>{{ event.location}}</p>
+     <strong>Id</strong>:<p>{{ event.id }}</p>
+     <strong>Description</strong>:<p>{{ event.description }}</p>
+     <strong>Total Seats</strong>:<p>{{ event.totalSeat}}</p>
+     <strong>Avaible Seats</strong>:<p>{{ event.availableSeat}}</p>
+     <strong>Image</strong>:<p>{{ event.imageUrl }}</p>
+     <strong>Time</strong>:<p class="text-sm text-gray-500">Date: {{ event.dateTime | date }}</p>
+      <button class="mt-2 bg-blue-500 text-white px-4 py-2 rounded" (click)="viewDetails(event.id)">View</button>
+    </div>
+  </div>
+  

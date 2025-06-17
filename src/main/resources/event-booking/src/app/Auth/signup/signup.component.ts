@@ -41,23 +41,48 @@ value: string;
         );
       }
 
-      onSUbmit(){
-        if(this.signupForm.valid){
+      onSUbmit() {
+        if (this.signupForm.valid) {
           this.authService.createUser(this.signupForm.value).subscribe({
             next: () => {
-              console.log("User Created Successfully")
+              console.log("User Created Successfully");
+      
+              const { email, password } = this.signupForm.value;
+      
+              this.authService.login({ email, password }).subscribe({
+                next: (res) => {
+                  localStorage.setItem('token', res.token);
+                  localStorage.setItem('role', res.role);
+      
+                  // Normalize role
+                  const role = res.role.replace('ROLE_', '');
+      
+                  if (role === 'ADMIN') {
+                    this.router.navigate(['/admin/admin-layout']);
+                  } else if (role === 'USER') {
+                    this.router.navigate(['/user']);
+                  } else {
+                    console.warn('Unknown role after signup:', res.role);
+                    this.router.navigate(['/']);
+                  }
+                },
+                error: (err) => {
+                  console.error('Auto-login failed', err);
+                  this.router.navigate(['/login']);
+                }
+              });
+      
               this.signupForm.reset();
-              this.router.navigate(['/admin/admin-layout']);
             },
             error: (err) => {
-              console.log("Error occured", err)
+              console.log("Error occurred", err);
             }
-          }
-          )
-        }
-        else {
+          });
+        } else {
           console.warn("Invalid data");
         }
       }
+      
+      
 
 }
