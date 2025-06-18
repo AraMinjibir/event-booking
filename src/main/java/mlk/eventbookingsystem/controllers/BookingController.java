@@ -48,15 +48,18 @@ public class BookingController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public void deleteAnEvent(@PathVariable Long id){
-        bookService.deleteBooking(id);
+    public void deleteBooking(@PathVariable Long id, Authentication authentication) {
+        String email = authentication.getName();
+        bookService.deleteBooking(id, email);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public Booking updateBook(@PathVariable Long id,@RequestBody Booking book){
-        return bookService.updateBook(id, book);
+    public Booking updateBook(@PathVariable Long id, @RequestBody Booking book, Authentication authentication) {
+        String email = authentication.getName();
+        return bookService.updateBook(id, book, email);
     }
+
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
@@ -69,5 +72,13 @@ public class BookingController {
     public List<Booking> getAllBooks(){
         return bookService.getAllBookings();
     }
+
+    @GetMapping("/history")
+    @PreAuthorize("hasRole('USER')")
+    public List<Booking> getUserBookings(Authentication authentication) {
+        String email = authentication.getName();
+        return bookService.getBookingsByUserEmail(email);
+    }
+
 
 }
