@@ -7,6 +7,7 @@ import { EventListComponent } from './event-list/event-list.component';
 import { SeatPickerComponent } from './seat-picker/seat-picker.component';
 import { BookingConfirmationComponent } from './booking-confirmation/booking-confirmation.component';
 import { UserLayoutComponent } from './user-layout.component';
+import { BookHistoryComponent } from './book-history/book-history.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { UserLayoutComponent } from './user-layout.component';
     EventDetailsComponent,
     EventListComponent,SeatPickerComponent,
     BookingConfirmationComponent,
-    UserLayoutComponent
+    UserLayoutComponent,
+    BookHistoryComponent
   ]
 })
 export class UserModule { }

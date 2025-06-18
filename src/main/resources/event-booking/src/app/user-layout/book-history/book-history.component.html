@@ -1,0 +1,37 @@
+<div class="p-4 max-w-3xl mx-auto">
+    <h2 class="text-2xl font-bold mb-4">Your Booking History</h2>
+  
+    <div *ngFor="let booking of bookings" class="border p-4 rounded mb-3 shadow">
+      <p><strong>Event:</strong> {{ booking.events.halls }} ({{ booking.events.location }})</p>
+      <p><strong>Seat:</strong> {{ booking.seatNumber }}</p>
+      <p><strong>Date:</strong> {{ booking.bookedAt | date }}</p>
+      <p><strong>QR Code:</strong> {{ booking.qrCode }}</p>
+  
+      <div class="mt-2 flex gap-2">
+        <button class="bg-red-500 text-white px-3 py-1 rounded" (click)="deleteBooking(booking.id)">
+          Delete
+        </button>
+        <button class="bg-yellow-500 text-white px-3 py-1 rounded" (click)="openEditDialog(booking)">
+          Edit
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- PrimeNG Dialog -->
+  <p-dialog header="Edit Booking" [(visible)]="displayEditDialog" [modal]="true" [closable]="false" [style]="{width: '400px'}">
+    <div class="p-fluid">
+     <div *ngIf="selectedBooking">
+        <div class="field">
+            <label for="seatNumber">Seat Number</label>
+            <p-inputNumber [(ngModel)]="selectedBooking.seatNumber" inputId="seatNumber"></p-inputNumber>
+          </div>
+     </div>
+    </div>
+  
+    <ng-template pTemplate="footer">
+      <button pButton label="Cancel" icon="pi pi-times" class="p-button-text" (click)="closeDialog()"></button>
+      <button pButton label="Save" icon="pi pi-check" (click)="saveBookingUpdate()" autofocus></button>
+    </ng-template>
+  </p-dialog>
+  

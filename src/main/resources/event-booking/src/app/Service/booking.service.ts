@@ -21,4 +21,16 @@ export class BookingService {
   getBook():Observable<Booking[]>{
     return this.http.get<Booking[]>(this.apiUrl);
   }
+
+  getUserBookings(): Observable<Booking[]> {
+    return this.http.get<Booking[]>(`${this.apiUrl}/history`);
+  }
+  deleteBooking(id: number) {
+    return this.http.delete(this.apiUrl + '/' + id);
+  }
+
+  updateBooking(id: number, booking: Partial<Booking>): Observable<Booking> {
+    return this.http.put<Booking>(`${this.apiUrl}/${id}`, booking);
+  }
+  
 }

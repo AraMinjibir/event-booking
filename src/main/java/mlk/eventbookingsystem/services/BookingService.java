@@ -77,21 +77,30 @@ public class BookingService {
     }
 
     @Transactional
-    public void deleteBooking(Long id){
-        bookingRepo.deleteById(id);
+    public void deleteBooking(Long bookingId, String email) {
+        Booking existing = bookingRepo.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        if (!existing.getUsers().getEmail().equals(email)) {
+            throw new RuntimeException("Unauthorized to delete this booking");
+        }
+
+        bookingRepo.delete(existing);
     }
 
-    @Transactional
-    public Booking updateBook(Long id, Booking updatedBook){
-        return bookingRepo.findById(id).map(book ->{
-            book.setUsers(updatedBook.getUsers());
-            book.setBookedAt(updatedBook.getBookedAt());
-            book.setEvents(updatedBook.getEvents());
-            book.setQrCode(updatedBook.getQrCode());
-            book.setSeatNumber(updatedBook.getSeatNumber());
 
-            return bookingRepo.save(book);
-        }).orElseThrow(() -> new RuntimeException("Book not found!."));
+    @Transactional
+    public Booking updateBook(Long bookingId, Booking updatedBooking, String email) {
+        Booking existing = bookingRepo.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        if (!existing.getUsers().getEmail().equals(email)) {
+            throw new RuntimeException("Unauthorized to update this booking");
+        }
+
+        // Update allowed fields
+        existing.setSeatNumber(updatedBooking.getSeatNumber());
+        return bookingRepo.save(existing);
     }
 
     public List<Booking> getAllBookings(){
@@ -101,4 +110,9 @@ public class BookingService {
     public Optional<Booking> getBookingById(Long id){
         return bookingRepo.findById(id);
     }
+
+    public List<Booking> getBookingsByUserEmail(String email) {
+        return bookingRepo.findByUsers_Email(email);
+    }
+
 }

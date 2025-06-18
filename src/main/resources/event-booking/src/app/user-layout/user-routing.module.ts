@@ -5,6 +5,7 @@ import { EventDetailsComponent } from './event-details/event-details.component';
 import { EventListComponent } from './event-list/event-list.component';
 import { SeatPickerComponent } from './seat-picker/seat-picker.component';
 import { UserLayoutComponent } from './user-layout.component';
+import { BookHistoryComponent } from './book-history/book-history.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,9 @@ const routes: Routes = [
       {
         path:"seat-picker/:id",
         component: SeatPickerComponent
+      },{
+        path: "book-history",
+        component: BookHistoryComponent
       }
     ]
   }
