@@ -18,9 +18,9 @@ Roles are clearly separated (Admin vs User).
 Tech Stack:
 Backend: Spring Boot, REST APIs, JWT Auth, Spring Security, JavaMail, JPA
 
-Frontend: Angular (calendar view, seat picker, QR code display)
+Frontend: Angular (calendar view, seat picker)
 
-Database: PostgreSQL / MySQL
+Database: PostgreSQL 
 
 Extras: QR Code Generator, Email Notifications
 
