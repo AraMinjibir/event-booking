@@ -1,5 +1,6 @@
 package mlk.eventbookingsystem.services;
 
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import mlk.eventbookingsystem.entities.Booking;
@@ -22,6 +23,7 @@ public class BookingService {
     private final BookingRepository bookingRepo;
     private final UserRepository userRepo;
     private final EventRepository eventRepo;
+    private final EmailService emailService;
 
     @Transactional
     public List<Booking> bookEvent(Long eventId, List<String> selectedSeats, String userEmail) {
@@ -32,21 +34,36 @@ public class BookingService {
 
         List<Booking> bookings = new ArrayList<>();
 
+        StringBuilder qrData = new StringBuilder();
+        qrData.append("🎫 *Event Booking Confirmation* \n")
+                .append("🗓 Event: ").append(event.getHalls()).append("\n")
+                .append("📍 Location: ").append(event.getLocation()).append("\n\n");
+
         for (String seat : selectedSeats) {
             Booking booking = new Booking();
             booking.setUsers(user);
             booking.setEvents(event);
             booking.setBookedAt(LocalDate.now());
 
-            // Extract numeric part from seat like "A5" => 5
             String numberOnly = seat.replaceAll("[^0-9]", "");
             booking.setSeatNumber(Integer.parseInt(numberOnly));
 
-            // Generate a random QR code (can later link to actual PDF/image)
-            booking.setQrCode(UUID.randomUUID().toString());
+            String qrCode = UUID.randomUUID().toString();
+            booking.setQrCode(qrCode);
 
             bookings.add(bookingRepo.save(booking));
+
+            qrData.append("🪑 Seat: ").append(seat)
+                    .append(" | QR: ").append(qrCode).append("\n");
         }
+
+        // Send the email
+        try {
+            emailService.sendQrCodeEmail(userEmail, qrData.toString());
+        } catch (MessagingException e) {
+            System.err.println("Failed to send QR code email: " + e.getMessage());
+        }
+
 
         return bookings;
     }
