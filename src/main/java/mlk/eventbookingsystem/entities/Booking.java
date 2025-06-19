@@ -11,12 +11,24 @@ public class Booking {
     private Long id;
     private LocalDate bookedAt;
     private int seatNumber;
+
+    public String getSeatCode() {
+        return seatCode;
+    }
+
+    public void setSeatCode(String seatCode) {
+        this.seatCode = seatCode;
+    }
+
     private String qrCode;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User users;
     @ManyToOne(fetch = FetchType.EAGER)
     private Event events;
+    @Column(name = "seat_code")
+    private String seatCode;
+
 
     public Booking() {
     }

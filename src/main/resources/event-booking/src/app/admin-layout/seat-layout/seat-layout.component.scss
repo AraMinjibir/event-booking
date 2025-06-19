@@ -1,0 +1,45 @@
+.seat-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .seat-row {
+    display: flex;
+    gap: 6px;
+  }
+  
+  .seat {
+    width: 40px;
+    height: 40px;
+    background-color: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    user-select: none;
+  
+    &.selected {
+      background-color: #4f46e5; // Indigo
+      color: white;
+    }
+  
+    &.booked {
+      background-color: #d1d5db; // Gray
+      color: #6b7280;
+      cursor: not-allowed;
+    }
+
+    button.booked {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+      button.selected {
+        background-color: green;
+        color: white;
+      }
+      
+  }
+  

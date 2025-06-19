@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Booking } from '../Model/booking';
 import { Observable } from 'rxjs';
@@ -32,5 +32,13 @@ export class BookingService {
   updateBooking(id: number, booking: Partial<Booking>): Observable<Booking> {
     return this.http.put<Booking>(`${this.apiUrl}/${id}`, booking);
   }
+  getBookedSeats(eventId: number): Observable<string[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
   
+    return this.http.get<string[]>(`${this.apiUrl}/booked-seats/${eventId}`, { headers });
+  }
+    
 }

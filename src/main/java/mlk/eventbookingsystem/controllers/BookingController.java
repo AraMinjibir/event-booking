@@ -4,6 +4,7 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import mlk.eventbookingsystem.dto.BookingRequest;
 import mlk.eventbookingsystem.entities.Booking;
+import mlk.eventbookingsystem.repos.BookingRepository;
 import mlk.eventbookingsystem.services.BookingService;
 import mlk.eventbookingsystem.services.EmailService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class BookingController {
     private final BookingService bookService;
     private final EmailService emailService;
+    private final BookingRepository bookingRepo;
 
 
     @PostMapping
@@ -79,6 +81,14 @@ public class BookingController {
         String email = authentication.getName();
         return bookService.getBookingsByUserEmail(email);
     }
+
+    @GetMapping("/booked-seats/{eventId}")
+    @PreAuthorize("hasRole('USER')")
+    public List<String> getBookedSeats(@PathVariable Long eventId) {
+        return bookingRepo.findByEventsId(eventId);
+    }
+
+
 
 
 }

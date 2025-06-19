@@ -2,6 +2,7 @@
     <h2 class="text-2xl font-bold mb-4">Your Booking History</h2>
   
     <div *ngFor="let booking of bookings" class="border p-4 rounded mb-3 shadow">
+      <p><strong>S/N:</strong> {{ booking.id }}</p>
       <p><strong>Event:</strong> {{ booking.events.halls }} ({{ booking.events.location }})</p>
       <p><strong>Seat:</strong> {{ booking.seatNumber }}</p>
       <p><strong>Date:</strong> {{ booking.bookedAt | date }}</p>

@@ -1,13 +1,8 @@
-<div class="p-4 max-w-xl mx-auto">
-    <h2 class="text-xl mb-4 font-bold">Pick Your Seats</h2>
-    <div class="grid grid-cols-6 gap-2">
-      <div *ngFor="let seat of seats"
-           [class.bg-green-400]="selectedSeats.includes(seat)"
-           class="border p-2 text-center cursor-pointer"
-           (click)="toggleSeat(seat)">
-        {{ seat }}
-      </div>
-    </div>
-    <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded" (click)="book()">Book</button>
-  </div>
-  
+<seat-layout
+  [rows]="['A', 'B', 'C', 'D']"
+  [seatsPerRow]="10"
+  [bookedSeats]="bookedSeats"
+  (selectedSeats)="onSeatSelection($event)">
+</seat-layout>
+
+<button (click)="book()" [disabled]="selectedSeats.length === 0">Book Now</button>

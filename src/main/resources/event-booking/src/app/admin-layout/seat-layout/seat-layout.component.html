@@ -1,1 +1,14 @@
-<p>seat-layout works!</p>
+<div class="seat-grid">
+    <div *ngFor="let row of rows" class="seat-row">
+      <div *ngFor="let num of [].constructor(seatsPerRow); let i = index" 
+           class="seat"
+           [ngClass]="{
+             'selected': isSelected(row + (i + 1)),
+             'booked': bookedSeats.includes(row + (i + 1))
+           }"
+           (click)="toggleSeat(row + (i + 1))">
+        {{ row + (i + 1) }}
+      </div>
+    </div>
+  </div>
+  

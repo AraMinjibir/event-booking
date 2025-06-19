@@ -40,10 +40,16 @@ public class BookingService {
                 .append("📍 Location: ").append(event.getLocation()).append("\n\n");
 
         for (String seat : selectedSeats) {
+            // ✅ PREVENT DOUBLE BOOKING
+            if (bookingRepo.existsByEventsIdAndSeatCode(eventId, seat)) {
+                throw new RuntimeException("Seat " + seat + " is already booked!");
+            }
             Booking booking = new Booking();
             booking.setUsers(user);
             booking.setEvents(event);
             booking.setBookedAt(LocalDate.now());
+
+            booking.setSeatCode(seat);
 
             String numberOnly = seat.replaceAll("[^0-9]", "");
             booking.setSeatNumber(Integer.parseInt(numberOnly));
@@ -56,6 +62,7 @@ public class BookingService {
             qrData.append("🪑 Seat: ").append(seat)
                     .append(" | QR: ").append(qrCode).append("\n");
         }
+
 
         // Send the email
         try {
@@ -114,5 +121,8 @@ public class BookingService {
     public List<Booking> getBookingsByUserEmail(String email) {
         return bookingRepo.findByUsers_Email(email);
     }
+
+
+
 
 }

@@ -1,37 +1,55 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../../Service/booking.service';
-import { NgFor } from '@angular/common';
+import { NgClass, NgFor } from '@angular/common';
+import { SeatLayoutComponent } from '../../admin-layout/seat-layout/seat-layout.component';
 
 @Component({
   selector: 'seat-picker',
-  imports: [NgFor],
+  imports: [NgFor,SeatLayoutComponent,NgClass],
   templateUrl: './seat-picker.component.html',
   styleUrl: './seat-picker.component.scss'
 })
 export class SeatPickerComponent {
 
   eventId!: number;
-  seats = Array.from({ length: 30 }, (_, i) => `A${i + 1}`);
   selectedSeats: string[] = [];
+  bookedSeats: string[] = [];
 
   constructor(private route: ActivatedRoute, private bookService: BookingService, private router: Router) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.eventId = +this.route.snapshot.paramMap.get('id')!;
-  }
-
-  toggleSeat(seat: string) {
-    const index = this.selectedSeats.indexOf(seat);
-    index >= 0 ? this.selectedSeats.splice(index, 1) : this.selectedSeats.push(seat);
-  }
-
-  book() {
-    this.bookService.bookEvent(this.eventId, this.selectedSeats).subscribe((res) => {
-      console.log('Booking successful', res);
-      this.router.navigate(['user/booking/confirmation']);
-    });
+    console.log("Fetching booked seats for eventId:", this.eventId); // Log ID
     
+    this.bookService.getBookedSeats(this.eventId).subscribe(
+      seats => {
+        console.log("Received booked seats:", seats); // Log response
+        this.bookedSeats = seats;
+      },
+      error => console.error("Error fetching booked seats:", error) // Log errors
+    );
   }
+
+  onSeatSelection(seats: string[]) {
+    console.log('Seats selected:', seats); 
+    this.selectedSeats = seats;
+  }
+  
+  
+
+ book() {
+  this.bookService.bookEvent(this.eventId, this.selectedSeats).subscribe({
+    next: (res) => {
+      console.log('Booking successful', res);
+      // Refresh booked seats after successful booking
+      this.bookService.getBookedSeats(this.eventId).subscribe(seats => {
+        this.bookedSeats = [...seats]; // New array reference
+        this.router.navigate(['user/booking/confirmation']);
+      });
+    },
+    error: (err) => console.error('Booking failed', err)
+  });
+}
 
 }
