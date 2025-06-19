@@ -122,6 +122,20 @@ public class BookingService {
         return bookingRepo.findByUsers_Email(email);
     }
 
+    public Booking adminUpdateBooking(Long id, Booking updatedBooking) {
+        Booking existing = bookingRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        existing.setSeatNumber(updatedBooking.getSeatNumber());
+        return bookingRepo.save(existing);
+    }
+
+    public void adminDeleteBooking(Long id) {
+        if (!bookingRepo.existsById(id)) {
+            throw new RuntimeException("Booking not found");
+        }
+        bookingRepo.deleteById(id);
+    }
 
 
 

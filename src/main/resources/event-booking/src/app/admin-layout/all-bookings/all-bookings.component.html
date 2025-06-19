@@ -1,23 +1,41 @@
 <p-table [value]="bookings" [paginator]="true" [rows]="5" responsiveLayout="scroll">
-    <ng-template pTemplate="header">
-      <tr>
-        <th>ID</th>
-        <th>Booked At</th>
-        <th>Seat Number</th>
-        <th>QR Code</th>
-        <th>Event</th>
-        <th>User</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-book>
-      <tr>
-        <td>{{ book.id }}</td>
-        <td>{{ book.bookedAt }}</td>
-        <td>{{ book.seatNumber }}</td>
-        <td>{{ book.qrCode }}</td>
-        <td>{{ book.events?.halls }}</td>
-        <td>{{ book.users?.email }}</td>
-      </tr>
-    </ng-template>
-  </p-table>
-  
+  <ng-template pTemplate="header">
+    <tr>
+      <th>ID</th>
+      <th>Booked At</th>
+      <th>Seat Number</th>
+      <th>QR Code</th>
+      <th>Event</th>
+      <th>User</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-book>
+    <tr>
+      <td>{{ book.id }}</td>
+      <td>{{ book.bookedAt | date }}</td>
+      <td>{{ book.seatNumber }}</td>
+      <td>{{ book.qrCode }}</td>
+      <td>{{ book.events?.halls }}</td>
+      <td>{{ book.users?.email }}</td>
+      <td>
+        <button pButton icon="pi pi-pencil" class="p-button-sm p-button-warning mr-2" (click)="openEditDialog(book)">Edit</button>
+        <button pButton icon="pi pi-trash" class="p-button-sm p-button-danger" (click)="deleteBooking(book.id)">Delete</button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog header="Edit Booking" [(visible)]="displayEditDialog" [modal]="true" [closable]="false" [style]="{width: '400px'}">
+  <div class="p-fluid" *ngIf="selectedBooking">
+    <div class="field">
+      <label for="seatNumber">Seat Number</label>
+      <p-inputNumber [(ngModel)]="selectedBooking.seatNumber" inputId="seatNumber"></p-inputNumber>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button pButton label="Cancel" icon="pi pi-times" class="p-button-text" (click)="closeDialog()"></button>
+    <button pButton label="Save" icon="pi pi-check" (click)="saveBookingUpdate()" autofocus></button>
+  </ng-template>
+</p-dialog>

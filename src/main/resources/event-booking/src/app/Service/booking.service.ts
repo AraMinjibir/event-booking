@@ -41,4 +41,12 @@ export class BookingService {
     return this.http.get<string[]>(`${this.apiUrl}/booked-seats/${eventId}`, { headers });
   }
     
+  updateBookingAsAdmin(id: number, booking: Booking) {
+    return this.http.put<Booking>(`${this.apiUrl}/admin/update/${id}`, booking);
+  }
+  
+  deleteBookingAsAdmin(id: number) {
+    return this.http.delete(`${this.apiUrl}/admin/delete/${id}`);
+  }
+  
 }

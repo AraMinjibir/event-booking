@@ -88,6 +88,18 @@ public class BookingController {
         return bookingRepo.findByEventsId(eventId);
     }
 
+    @PutMapping("/admin/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Booking updateBookingAsAdmin(@PathVariable Long id, @RequestBody Booking updatedBooking) {
+        return bookService.adminUpdateBooking(id, updatedBooking);
+    }
+
+    @DeleteMapping("/admin/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteBookingAsAdmin(@PathVariable Long id) {
+        bookService.adminDeleteBooking(id);
+    }
+
 
 
 
