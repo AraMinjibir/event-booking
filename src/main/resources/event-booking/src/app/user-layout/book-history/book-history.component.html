@@ -1,7 +1,7 @@
-<div class="p-4 max-w-3xl mx-auto">
-    <h2 class="text-2xl font-bold mb-4">Your Booking History</h2>
+<div class="p-4 max-w-30rem mx-auto text-gray-500">
+    <h2 class="text-2xl font-bold mb-4 text-center">Your Booking History</h2>
   
-    <div *ngFor="let booking of bookings" class="border p-4 rounded mb-3 shadow">
+    <div *ngFor="let booking of bookings" class="border-3 p-4 border-round mb-3 shadow text-lg">
       <p><strong>S/N:</strong> {{ booking.id }}</p>
       <p><strong>Event:</strong> {{ booking.events.halls }} ({{ booking.events.location }})</p>
       <p><strong>Seat:</strong> {{ booking.seatNumber }}</p>
@@ -9,10 +9,10 @@
       <p><strong>QR Code:</strong> {{ booking.qrCode }}</p>
   
       <div class="mt-2 flex gap-2">
-        <button class="bg-red-500 text-white px-3 py-1 rounded" (click)="deleteBooking(booking.id)">
+        <button class="bg-red-500 text-white px-5 py-1 border-round text-lg" (click)="deleteBooking(booking.id)">
           Delete
         </button>
-        <button class="bg-yellow-500 text-white px-3 py-1 rounded" (click)="openEditDialog(booking)">
+        <button class="bg-yellow-500 text-white px-5 py-1 border-round text-lg" (click)="openEditDialog(booking)">
           Edit
         </button>
       </div>

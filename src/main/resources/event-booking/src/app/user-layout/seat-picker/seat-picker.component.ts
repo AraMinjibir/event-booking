@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../../Service/booking.service';
-import { NgClass, NgFor } from '@angular/common';
 import { SeatLayoutComponent } from '../../admin-layout/seat-layout/seat-layout.component';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'seat-picker',
-  imports: [NgFor,SeatLayoutComponent,NgClass],
+  imports: [SeatLayoutComponent, ButtonModule],
   templateUrl: './seat-picker.component.html',
   styleUrl: './seat-picker.component.scss'
 })
@@ -15,6 +15,7 @@ export class SeatPickerComponent {
   eventId!: number;
   selectedSeats: string[] = [];
   bookedSeats: string[] = [];
+  isLoading = false;
 
   constructor(private route: ActivatedRoute, private bookService: BookingService, private router: Router) {}
 
@@ -32,6 +33,7 @@ export class SeatPickerComponent {
   }
 
   onSeatSelection(seats: string[]) {
+
     console.log('Seats selected:', seats); 
     this.selectedSeats = seats;
   }
@@ -39,14 +41,16 @@ export class SeatPickerComponent {
   
 
  book() {
+  this.isLoading = true;
   this.bookService.bookEvent(this.eventId, this.selectedSeats).subscribe({
+    
     next: (res) => {
       console.log('Booking successful', res);
       // Refresh booked seats after successful booking
       this.bookService.getBookedSeats(this.eventId).subscribe(seats => {
         this.bookedSeats = [...seats]; // New array reference
         this.router.navigate(['user/booking/confirmation']);
-      });
+      });this.isLoading = false;
     },
     error: (err) => console.error('Booking failed', err)
   });

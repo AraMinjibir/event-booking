@@ -7,15 +7,19 @@ import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { AuthService } from '../../Service/auth.service';
 import { Router, RouterLink } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { NgIf } from '@angular/common';
+import { ToastModule } from 'primeng/toast';
 
 
 
 
 @Component({
   selector: 'signup',
-  imports: [ReactiveFormsModule, InputTextModule, FormsModule, AutoComplete, ButtonModule,RouterLink],
+  imports: [ReactiveFormsModule, InputTextModule, FormsModule, AutoComplete, ButtonModule,RouterLink,NgIf, ToastModule],
   templateUrl: './signup.component.html',
-  styleUrl: './signup.component.scss'
+  styleUrl: './signup.component.scss',
+  providers: [MessageService],
 })
 export class SignupComponent {
   private router:Router = inject(Router);
@@ -23,8 +27,9 @@ export class SignupComponent {
 items: string[] | undefined;
 value: string;
   signupForm: FormGroup;
-
+  isLoading = false;
   authService:AuthService = inject(AuthService);
+  constructor( private messageService: MessageService){}
       ngOnInit() {
           this.signupForm = new FormGroup({
               email: new FormControl("", Validators.required),
@@ -42,21 +47,36 @@ value: string;
       }
 
       onSUbmit() {
-        if (this.signupForm.valid) {
-          this.authService.createUser(this.signupForm.value).subscribe({
-            next: () => {
-              console.log("User Created Successfully");
+        if (this.signupForm.invalid) {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Invalid Input',
+            detail: 'Please fill out all required fields.'
+          });
+          return;
+        }
       
-              const { email, password } = this.signupForm.value;
+        this.isLoading = true;
       
-              this.authService.login({ email, password }).subscribe({
-                next: (res) => {
-                  localStorage.setItem('token', res.token);
-                  localStorage.setItem('role', res.role);
+        this.authService.createUser(this.signupForm.value).subscribe({
+          next: () => {
+            const { email, password } = this.signupForm.value;
       
-                  // Normalize role
-                  const role = res.role.replace('ROLE_', '');
+            this.authService.login({ email, password }).subscribe({
+              next: (res) => {
+                
+                localStorage.setItem('token', res.token);
+                const role = res.role.replace('ROLE_', '');
+                localStorage.setItem('role', role);
       
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Account Created',
+                  detail: `Welcome ${role}, you are now logged in.`
+                });
+                
+                setTimeout(() =>{
+                  this.isLoading = false;
                   if (role === 'ADMIN') {
                     this.router.navigate(['/admin/admin-layout']);
                   } else if (role === 'USER') {
@@ -65,23 +85,34 @@ value: string;
                     console.warn('Unknown role after signup:', res.role);
                     this.router.navigate(['/']);
                   }
-                },
-                error: (err) => {
-                  console.error('Auto-login failed', err);
-                  this.router.navigate(['/login']);
-                }
-              });
+                },3000)
+                
+              },
+              error: (err) => {
+                this.isLoading = false;
+                console.error('Auto-login failed', err);
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Login Failed',
+                  detail: 'Try logging in manually.'
+                });
+              }
+            });
       
-              this.signupForm.reset();
-            },
-            error: (err) => {
-              console.log("Error occurred", err);
-            }
-          });
-        } else {
-          console.warn("Invalid data");
-        }
+            this.signupForm.reset();
+          },
+          error: (err) => {
+            this.isLoading = false;
+            console.log("Error occurred", err);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Signup Failed',
+              detail: 'Something went wrong. Please try again.'
+            });
+          }
+        });
       }
+      
       
       
 

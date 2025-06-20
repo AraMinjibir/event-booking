@@ -1,16 +1,46 @@
-<form [formGroup] = "signupForm" class="max-w-30rem mx-auto py-6 px-4 my-6 bg-primary" (ngSubmit)="onSUbmit()">
-  <div class="flex flex-column gap-2">
-    <label for="email">Username</label>
-    <input type="text" pInputText formControlName="email" placeholder="Enter your Email Address."/>
-</div>
-<div class="flex flex-column gap-2">
-  <label for="password">Password</label>
-  <input type="text" pInputText formControlName="password" placeholder="Enter your Password."/>
-</div>
-<div class="card flex justify-center">
-  <p-autocomplete formControlName="role" [suggestions]="items" 
-  (completeMethod)="search($event)" optionLabel="label" [dropdown]="true" />
-</div>
-<p>Already have an account? <a routerLink="/auth/login">login</a></p>
-<button pButton type="submit">Submit</button>
+<form [formGroup]="signupForm" (ngSubmit)="onSUbmit()"
+      class="max-w-30rem mx-auto my-10 p-6 bg-white shadow-md border-round my-5">
+
+  <h2 class="text-xl font-bold text-center text-blue-600">Create an Account</h2>
+
+  <div>
+    <input type="text" pInputText formControlName="email" class="p-inputtext-sm text-lg w-full p-3 bg-transparent text-gray-600"
+           placeholder="Enter your Email Address" />
+    <small class="text-red-500" *ngIf="signupForm.controls['email'].touched && signupForm.controls['email'].invalid">
+      Email is required.
+    </small>
+  </div>
+
+  <div>
+    <input type="password" pInputText formControlName="password" class="p-inputtext-sm text-lg w-full p-3 bg-transparent text-gray-600 my-4"
+           placeholder="Enter your Password" />
+    <small class="text-red-500" *ngIf="signupForm.controls['password'].touched && signupForm.controls['password'].invalid">
+      Password is required.
+    </small>
+  </div>
+
+  <div>
+    <p-autoComplete
+  formControlName="role"
+  [suggestions]="items"
+  (completeMethod)="search($event)"
+  optionLabel="label"
+  [dropdown]="true"
+  inputStyleClass="p-3 bg-transparent w-full text-gray-600 text-lg"
+  panelStyleClass="custom-panel"
+/>
+    <small class="text-red-500" *ngIf="signupForm.controls['role'].touched && signupForm.controls['role'].invalid">
+      Please select a role.
+    </small>
+  </div>
+
+  <p class="text-sm text-center text-gray-600">Already have an account?
+    <a routerLink="/auth/login" class="text-blue-600 hover:underline">Login</a>
+  </p>
+
+  <button pButton type="submit" class=" w-full p-3 text-white bg-blue-500 text-lg"
+   [loading]="isLoading">
+    Submit
+  </button>
 </form>
+<p-toast/>

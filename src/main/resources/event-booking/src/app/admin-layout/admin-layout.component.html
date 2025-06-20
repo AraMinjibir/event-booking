@@ -1,11 +1,13 @@
-<div class="bg-white mx-auto p-8 my-8 text-primary">
-<div class="flex justify-content-between">
-    <a routerLink="all-bookings" (click)="showHide=false">Manage Bookings</a>
-    <a routerLink="event-management" (click)="showHide=false">Manage Events</a>
+<div class="bg-white md:w-5 w-full mx-auto md:p-8 p-2 my-8 text-gray-600">
+<div class="text-center">
+    <button pButton routerLink="all-bookings" (click)="showHide=false"
+     class="bg-blue-500 text-white text-xl md:mr-2 p-3">Manage Bookings</button>
+    <button pButton routerLink="event-management" (click)="showHide=false"
+     class="bg-blue-500 text-white text-xl md:ml-2 md:my-0 my-1 p-3">Manage Events</button>
 </div>
-<div *ngIf="showHide">
-    <h3>Welcome to Admin Section</h3>
-    <p>Where you can perform admin tasks efficiently</p>
+<div *ngIf="showHide" class="text-center max-w-30rem mx-auto">
+    <h3 class="text-2xl">Welcome to Admin Section</h3>
+    <p>Where you can perform admin tasks efficiently.</p>
 </div>
     <router-outlet></router-outlet>
 </div>

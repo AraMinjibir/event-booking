@@ -1,7 +1,7 @@
-<div class="p-4 max-w-2xl mx-auto">
+<div class="p-4 max-w-2xl mx-auto text-gray-500">
     <h1 class="text-2xl font-bold mb-2">{{ event?.halls }}</h1>
-    <p class="mb-2">{{ event?.description }}</p>
+    <p class="mb-2 text-lg">{{ event?.description }}</p>
     <p><strong>Date:</strong> {{ event?.dateTime | date }}</p>
-    <button class="mt-4 bg-green-600 text-white px-4 py-2 rounded" (click)="proceedToBooking()">Pick Seats</button>
+    <button class="mt-4 bg-blue-500 text-white px-4 py-2 border-round text-lg" (click)="proceedToBooking()">Pick Seats</button>
   </div>
   

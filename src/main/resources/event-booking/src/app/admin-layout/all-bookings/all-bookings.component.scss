@@ -1,0 +1,7 @@
+::ng-deep .p-datatable,
+::ng-deep .p-datatable-header,
+::ng-deep .p-datatable-thead > tr > th,
+::ng-deep .p-datatable-tbody > tr > td {
+  background-color: white !important;
+  color: black !important;
+}

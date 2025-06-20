@@ -1,11 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
 @use "primeflex/themes/primeone-light";
 @use 'primeflex/primeflex' as *;
+@import 'primeicons/primeicons.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&family=Playwrite+PE:wght@100..400&family=Tagesschrift&display=swap');
+
 
 
 a{
     text-decoration: none;
-    color: rgba(107, 107, 213, 0.677);
+    color: white;
     font-size: larger;
     font-style: italic;
+}
+
+.text-2xl{
+    font-family: "Philosopher", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+      
+}
+
+.text-lg{
+    font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.text-xl{
+    font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
 }

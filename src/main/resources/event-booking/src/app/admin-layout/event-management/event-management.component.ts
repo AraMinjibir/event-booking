@@ -1,20 +1,21 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EventService } from '../../Service/event.service';
 import { Event } from '../../Model/event';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
+import { TextareaModule } from 'primeng/textarea';
 
 
 @Component({
   selector: 'event-management',
-  imports: [ReactiveFormsModule,
+  imports: [ReactiveFormsModule,CommonModule,
     TableModule,
     InputTextModule,
-    ButtonModule, NgIf],
+    ButtonModule, NgIf, TextareaModule],
   templateUrl: './event-management.component.html',
   styleUrl: './event-management.component.scss'
 })
@@ -32,18 +33,18 @@ export class EventManagementComponent {
 
   initForm() {
     this.eventForm = this.fb.group({
-      location: [''],
-      dateTime: [''],
-      halls: [''],
-      totalSeat: [0],
-      availableSeat: [0],
-      description: [''],
-      imageUrl: ['']
+      location: ['',Validators.required],
+      dateTime: ['',Validators.required],
+      halls: ['',Validators.required],
+      totalSeat: [0,Validators.required],
+      availableSeat: [0,Validators.required],
+      description: ['',Validators.required],
+      imageUrl: ['',Validators.required]
     });
   }
 
   loadEvents() {
-    this.eventService.getAllEvents().subscribe(data => this.events = data);
+      this.eventService.getAllEvents().subscribe(data => this.events = data);
   }
 
   saveEvent() {

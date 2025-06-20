@@ -5,7 +5,7 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { NgIf, NgFor,CommonModule  } from '@angular/common';
+import { CommonModule  } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -17,8 +17,6 @@ import { FormsModule } from '@angular/forms';
     DialogModule,
     ButtonModule,
     InputNumberModule,
-    NgIf,
-    NgFor,
     FormsModule,
     ButtonModule
   ],

@@ -1,8 +1,12 @@
-<seat-layout
+<div class="max-w-30rem mx-auto text-lg">
+  <seat-layout
   [rows]="['A', 'B', 'C', 'D']"
   [seatsPerRow]="10"
   [bookedSeats]="bookedSeats"
   (selectedSeats)="onSeatSelection($event)">
 </seat-layout>
 
-<button (click)="book()" [disabled]="selectedSeats.length === 0">Book Now</button>
+<button pButton class="bg-blue-500 p-4 text-white border-round mt-3 w-full text-lg" 
+(click)="book()" [loading]="isLoading" [disabled]="selectedSeats.length === 0">Book Now</button>
+
+</div>
