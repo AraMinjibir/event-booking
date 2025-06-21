@@ -1,0 +1,25 @@
+# Stage 1: Build Angular frontend
+FROM node:18 AS frontend-builder
+WORKDIR /app
+COPY src/main/resources/event-booking ./event-booking
+WORKDIR /app/event-booking
+RUN npm install && npm run build --configuration production
+
+# Stage 2: Build Java backend
+FROM eclipse-temurin:21-jdk AS backend-builder
+WORKDIR /app
+COPY . .
+RUN ./mvnw clean package -DskipTests
+
+# Stage 3: Final image
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+
+# Copy built .jar
+COPY --from=backend-builder /app/target/event-booking-system-0.0.1-SNAPSHOT.jar app.jar
+
+# Copy Angular dist to Spring Boot static folder
+COPY --from=frontend-builder /app/event-booking/dist/event-booking/* /app/src/main/resources/static/
+
+EXPOSE 8080
+CMD ["java", "-jar", "app.jar"]
