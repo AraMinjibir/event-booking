@@ -3,7 +3,7 @@ FROM node:18 AS frontend-builder
 WORKDIR /app
 COPY src/main/resources/event-booking ./event-booking
 WORKDIR /app/event-booking
-RUN npm install && npm run build --configuration production
+RUN npm install && npx ng build --configuration production
 
 # Stage 2: Build Java backend
 FROM eclipse-temurin:21-jdk AS backend-builder
