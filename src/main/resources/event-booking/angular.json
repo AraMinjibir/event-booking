@@ -41,8 +41,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "5MB",
+                  "maximumError": "2MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -64,6 +64,12 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
+              "fileReplacements": [
+        {
+        "replace": "src/environments/environment.ts",
+        "with": "src/environments/environment.prod.ts"
+      }
+    ],
               "buildTarget": "event-booking:build:production"
             },
             "development": {

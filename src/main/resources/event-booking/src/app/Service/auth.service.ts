@@ -2,15 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Auth } from '../Model/auth';
-import { Booking } from '../Model/booking';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8080/api/auth/register';
-  private baseUrl2 = 'http://localhost:8080/api/auth/login';
+  private baseUrl = `${environment.apiUrl}/auth/register`;
+  private baseUrl2 = `${environment.apiUrl}/auth/login`;
   
 
   constructor(private http: HttpClient, private router: Router) { }
